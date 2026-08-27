@@ -1,0 +1,21 @@
+Package: com.legacyos.store 
+Name: Legacy OS Store 
+Version: 1.0
+Architecture: iphoneos-arm 
+Maintainer: John <johnbakerlondon1@gmail.com> 
+Author: John Baker 
+Section: Tweaks 
+Description: Legacy store is a small project of mine with the purpose of adding my own ipa's which i can install with ease , this does require Appsync. 
+Filename: debs/com.legacyos.store.deb 
+Size: 1528826
+
+Package: com.legacyos6.store
+Name: LegacyOS 6 Store
+Version: 1.0.0
+Architecture: iphoneos-arm
+Maintainer: Your Name <johnbakerlondon1@gmail.com>
+Filename: debs/com.legacyos6.store_1.0.0_iphoneos-arm.deb
+Size: 22236
+MD5sum: 8F95BA4BA7217F842C31323B5D7F68D9
+Description: A webclip app store client for LegacyOS 6.
+Section: Applications
