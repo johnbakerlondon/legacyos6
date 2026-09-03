@@ -1,0 +1,9 @@
+Package: com.johndoe.pixelsiege
+Name: Pixel Siege
+Version: 1.0
+Architecture: iphoneos-arm
+Description: A simple real-time strategy game for iOS 6. Train swordsmen and archers, collect gold, and lay siege to the enemy keep. Universal — runs on iPhone and iPad.
+Section: Games
+Author: John
+Maintainer: John
+Depends: firmware (>= 6.0)
