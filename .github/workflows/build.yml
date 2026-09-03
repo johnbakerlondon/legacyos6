@@ -3,7 +3,7 @@ name: Build PixelSiege .deb
 on:
   push:
     paths:
-      - 'PixelSiege/**'
+      - 'PixelSiege-iOS6-Universal/**'
       - '.github/workflows/build.yml'
   workflow_dispatch:
 
