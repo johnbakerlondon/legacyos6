@@ -1,0 +1,52 @@
+name: Build PixelSiege .deb
+
+on:
+  push:
+    paths:
+      - 'PixelSiege-iOS6-Universal/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install Theos dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang fakeroot git wget
+      
+      - name: Clone Theos
+        run: |
+          git clone --recursive https://github.com/theos/theos.git ~/theos
+      
+      - name: Build PixelSiege
+        env:
+          THEOS: ~/theos
+        run: |
+          cd PixelSiege-iOS6-Universal
+          chmod +x build.sh
+          ./build.sh
+      
+      - name: Upload .deb to releases
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: PixelSiege-iOS6-Universal/dist/*.deb
+      
+      - name: Copy .deb to debs folder
+        run: |
+          mkdir -p debs
+          cp PixelSiege-iOS6-Universal/dist/*.deb debs/ || true
+          ls -la debs/
+      
+      - name: Commit and push .deb
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add debs/
+          git commit -m "Add compiled PixelSiege .deb" || true
+          git push
