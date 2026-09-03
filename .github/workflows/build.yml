@@ -25,10 +25,11 @@ jobs:
       
       - name: Build PixelSiege
         env:
-          THEOS: ~/theos
+          THEOS: ${{ runner.temp }}/theos
         run: |
           cd PixelSiege-iOS6-Universal
           chmod +x build.sh
+          export THEOS=/root/theos
           ./build.sh
       
       - name: Upload .deb to releases
