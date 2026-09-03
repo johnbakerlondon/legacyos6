@@ -14,40 +14,43 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Install Theos dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential clang fakeroot git wget
       
-      - name: Clone Theos
+      - name: Clone and setup Theos
         run: |
           git clone --recursive https://github.com/theos/theos.git ~/theos
+          echo "THEOS=~/theos" >> $GITHUB_ENV
       
       - name: Build PixelSiege
-        env:
-          THEOS: ${{ runner.temp }}/theos
         run: |
+          export THEOS=~/theos
           cd PixelSiege-iOS6-Universal
           chmod +x build.sh
-          export THEOS=/root/theos
-          ./build.sh
+          bash build.sh
       
-      - name: Upload .deb to releases
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: PixelSiege-iOS6-Universal/dist/*.deb
+      - name: Check for .deb
+        run: |
+          if [ -f PixelSiege-iOS6-Universal/dist/*.deb ]; then
+            echo "✓ .deb found"
+            ls -lh PixelSiege-iOS6-Universal/dist/*.deb
+          else
+            echo "✗ No .deb generated"
+            exit 1
+          fi
       
       - name: Copy .deb to debs folder
         run: |
           mkdir -p debs
-          cp PixelSiege-iOS6-Universal/dist/*.deb debs/ || true
-          ls -la debs/
+          cp PixelSiege-iOS6-Universal/dist/*.deb debs/
+          ls -lh debs/
       
       - name: Commit and push .deb
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add debs/
-          git commit -m "Add compiled PixelSiege .deb" || true
+          git commit -m "Add compiled PixelSiege .deb" || echo "No changes to commit"
           git push
